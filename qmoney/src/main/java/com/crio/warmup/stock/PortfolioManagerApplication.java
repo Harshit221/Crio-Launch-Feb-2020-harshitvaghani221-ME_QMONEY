@@ -75,7 +75,8 @@ public class PortfolioManagerApplication {
   }
 
   private static File resolveFileFromResources(String filename) throws URISyntaxException {
-    return Paths.get(Thread.currentThread().getContextClassLoader().getResource(filename).toURI()).toFile();
+    return Paths.get(Thread.currentThread().getContextClassLoader().getResource(filename)
+        .toURI()).toFile();
   }
 
   private static ObjectMapper getObjectMapper() {
@@ -126,7 +127,8 @@ public class PortfolioManagerApplication {
     String functionNameFromTestFileInStackTrace = "";
     String lineNumberFromTestFileInStackTrace = "";
 
-    return Arrays.asList(new String[] { valueOfArgument0, resultOfResolveFilePathArgs0, toStringOfObjectMapper,
+    return Arrays.asList(new String[] { valueOfArgument0, 
+        resultOfResolveFilePathArgs0, toStringOfObjectMapper,
         functionNameFromTestFileInStackTrace, lineNumberFromTestFileInStackTrace });
   }
 
