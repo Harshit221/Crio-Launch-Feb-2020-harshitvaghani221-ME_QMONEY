@@ -78,10 +78,15 @@ public class PortfolioManagerApplication {
 
     RestTemplate restTemplate = new RestTemplate();
     List<Double> mappingList = new ArrayList<>();
-
+    String endDate;
+    if(args[1]!=null)
+      endDate=args[1];
+    else
+      endDate=LocalDate.now().toString();
+      
     String uri = "https://api.tiingo.com/tiingo/daily/" + portfolioTrade.getSymbol() 
         + "/prices?startDate="
-        + portfolioTrade.getPurchaseDate() + "&endDate=" + args[1] + "&token="
+        + portfolioTrade.getPurchaseDate() + "&endDate=" + endDate + "&token="
         + "29e143088514049c9860ceb299396fe4dfcf095f";
     String result = (restTemplate.getForObject(uri, String.class));
     List<TiingoCandle> candleList = objectMapper.readValue(result, new 
