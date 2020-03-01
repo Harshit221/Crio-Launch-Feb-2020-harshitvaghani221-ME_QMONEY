@@ -66,7 +66,7 @@ public class PortfolioManagerApplication {
     for (PortfolioTrade obj : allJsonObjects) {
       String uri = "https://api.tiingo.com/tiingo/daily/" + obj.getSymbol()
                         + "/prices?startDate=" + obj.getPurchaseDate() + "&endDate="
-                        + args[1] + "&token=366b6aa86c15fcbe47efcd6b4dc938a33de2f4e0";
+                        + args[1] + "&token=29e143088514049c9860ceb299396fe4dfcf095f";
       String result = (restTemplate.getForObject(uri,String.class));
       List<TiingoCandle> candleList = objectMapper.readValue(result,
                         new TypeReference<List<TiingoCandle>>() {});
