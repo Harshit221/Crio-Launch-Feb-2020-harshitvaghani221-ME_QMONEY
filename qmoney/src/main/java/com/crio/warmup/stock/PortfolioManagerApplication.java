@@ -54,49 +54,36 @@ public class PortfolioManagerApplication {
   // ./gradlew run --args="trades.json 2019-12-03"
   // where trades.json is your json file
 
-  public static List<AnnualizedReturn> mainCalculateSingleReturn(String[] args) throws 
-      IOException, URISyntaxException {
 
-    File file = resolveFileFromResources(args[0]);
-    ObjectMapper objectMapper = getObjectMapper();
-    List<PortfolioTrade> allJsonObjects = objectMapper.readValue(file, new 
-        TypeReference<List<PortfolioTrade>>() {});
-    List<AnnualizedReturn> annualizedReturnList = new ArrayList<>();
-
-    for (PortfolioTrade portfolioTrade : allJsonObjects) {
-      List<Double> price = getPrice(objectMapper, portfolioTrade, args);
-      annualizedReturnList
-          .add(calculateAnnualizedReturns(LocalDate.parse(args[1]), portfolioTrade,
-          price.get(0), price.get(1)));
-    }
-    return annualizedReturnList;
-  }
-
-  public static List<Double> getPrice(ObjectMapper objectMapper, 
-      PortfolioTrade portfolioTrade, String[] args)
+  public static List<AnnualizedReturn> mainCalculateSingleReturn(String[] args)
       throws IOException, URISyntaxException {
-
+    File file = resolveFileFromResources(args[0]);
     RestTemplate restTemplate = new RestTemplate();
-    List<Double> mappingList = new ArrayList<>();
-    String endDate;
-    if (args[1] != null || args[1].equals("")) {
-      endDate = args[1];
-    } else {
-      endDate = LocalDate.now().toString();
+    ObjectMapper objectMapper = getObjectMapper();
+    List<PortfolioTrade> allJsonObjects = objectMapper.readValue(file,
+                        new TypeReference<List<PortfolioTrade>>() {});
+    List<AnnualizedReturn> annualizedReturns = new ArrayList<AnnualizedReturn>();
+    for (PortfolioTrade obj : allJsonObjects) {
+      String uri = "https://api.tiingo.com/tiingo/daily/" + obj.getSymbol()
+                        + "/prices?startDate=" + obj.getPurchaseDate() + "&endDate="
+                        + args[1] + "&token=366b6aa86c15fcbe47efcd6b4dc938a33de2f4e0";
+      String result = (restTemplate.getForObject(uri,String.class));
+      List<TiingoCandle> candleList = objectMapper.readValue(result,
+                        new TypeReference<List<TiingoCandle>>() {});
+      TiingoCandle candleObj = candleList.get(candleList.size() - 1);
+      Double buyPrice = candleList.get(0).getOpen();
+      Double sellPrice = candleObj.getClose();
+      AnnualizedReturn anRet = calculateAnnualizedReturns(
+                          candleObj.getDate(),obj,buyPrice,sellPrice);
+      annualizedReturns.add(anRet);
     }
-      
-      
-    String uri = "https://api.tiingo.com/tiingo/daily/" + portfolioTrade.getSymbol() 
-        + "/prices?startDate="
-        + portfolioTrade.getPurchaseDate() + "&endDate=" + endDate + "&token="
-        + "29e143088514049c9860ceb299396fe4dfcf095f";
-    String result = (restTemplate.getForObject(uri, String.class));
-    List<TiingoCandle> candleList = objectMapper.readValue(result, new 
-        TypeReference<List<TiingoCandle>>() {});
-    mappingList.add(candleList.get(0).getOpen());
-    mappingList.add(candleList.get(candleList.size() - 1).getClose());
-    return mappingList;
+    Collections.sort(annualizedReturns,Collections.reverseOrder());
+    // System.out.print(annualizedReturns);
+    return annualizedReturns;
   }
+
+
+  
 
   // TODO: CRIO_TASK_MODULE_CALCULATIONS
   // annualized returns should be calculated in two steps -
