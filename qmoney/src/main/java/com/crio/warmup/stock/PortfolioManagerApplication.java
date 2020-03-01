@@ -79,7 +79,7 @@ public class PortfolioManagerApplication {
     RestTemplate restTemplate = new RestTemplate();
     List<Double> mappingList = new ArrayList<>();
     String endDate;
-    if (args.length == 1) {
+    if (args[1] != null || args[1].equals("")) {
       endDate = args[1];
     } else {
       endDate = LocalDate.now().toString();
