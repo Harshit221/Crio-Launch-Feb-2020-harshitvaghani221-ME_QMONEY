@@ -79,10 +79,12 @@ public class PortfolioManagerApplication {
     RestTemplate restTemplate = new RestTemplate();
     List<Double> mappingList = new ArrayList<>();
     String endDate;
-    if(args[1]!=null)
-      endDate=args[1];
-    else
-      endDate=LocalDate.now().toString();
+    if (args[1] != null) {
+      endDate = args[1];
+    } else {
+      endDate = LocalDate.now().toString();
+    }
+      
       
     String uri = "https://api.tiingo.com/tiingo/daily/" + portfolioTrade.getSymbol() 
         + "/prices?startDate="
