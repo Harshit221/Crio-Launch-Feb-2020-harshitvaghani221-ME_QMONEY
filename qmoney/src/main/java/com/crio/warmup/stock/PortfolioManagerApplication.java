@@ -50,7 +50,8 @@ public class PortfolioManagerApplication {
     List<String> allSymbols = new ArrayList<String>();
     List<TotalReturnsDto> mappingList = getSortedClosingPrice(objectMapper,allJsonObjects,args);
     Collections.sort(mappingList);
-    for (TotalReturnsDto trDto : mappingList) {
+    for (int i = 0; i < mappingList.size(); i++) {
+      TotalReturnsDto trDto = mappingList.get(i);
       allSymbols.add(trDto.getSymbol());
     }
     //System.out.print(allSymbols);
@@ -62,7 +63,9 @@ public class PortfolioManagerApplication {
                                       throws IOException, URISyntaxException {
     RestTemplate restTemplate = new RestTemplate();
     List<TotalReturnsDto> mappingList = new ArrayList<TotalReturnsDto>();
-    for (PortfolioTrade obj : allJsonObjects) {
+    
+    for (int i = 0; i < allJsonObjects.size(); i++) {
+      PortfolioTrade obj = allJsonObjects.get(i);
       String uri = "https://api.tiingo.com/tiingo/daily/" + obj.getSymbol()
                         + "/prices?startDate=" + obj.getPurchaseDate() + "&endDate="
                         + args[1] + "&token=366b6aa86c15fcbe47efcd6b4dc938a33de2f4e0";
@@ -83,7 +86,8 @@ public class PortfolioManagerApplication {
     List<PortfolioTrade> allJsonObjects = objectMapper.readValue(file,
                        new TypeReference<List<PortfolioTrade>>() {});
     List<String> allSymbols = new ArrayList<String>();
-    for (PortfolioTrade obj : allJsonObjects) {
+    for (int i = 0; i < allJsonObjects.size(); i++) {
+      PortfolioTrade obj = allJsonObjects.get(i);
       allSymbols.add(obj.getSymbol());
     }
     // System.out.print(allSymbols);

@@ -61,7 +61,7 @@ public class PortfolioManagerImpl implements PortfolioManager {
       LocalDate endDate) {
     List<AnnualizedReturn> annualizedReturns = new ArrayList<AnnualizedReturn>();
     for (PortfolioTrade obj : portfolioTrades) {
-      List<TiingoCandle> candleList = null;
+      List<TiingoCandle> candleList = new ArrayList<>();
       try {
         candleList = getStockQuote(obj.getSymbol(), obj.getPurchaseDate(), endDate);
       } catch (JsonProcessingException e) {
