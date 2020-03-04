@@ -98,7 +98,8 @@ public class PortfolioManagerApplication {
 
   private static File resolveFileFromResources(String filename) throws URISyntaxException {
     return Paths.get(
-        Thread.currentThread().getContextClassLoader().getResource(filename).toURI()).toFile();
+        Thread.currentThread().getContextClassLoader().getResource(filename)
+            .toURI()).toFile();
   }
 
   private static ObjectMapper getObjectMapper() {
@@ -112,8 +113,10 @@ public class PortfolioManagerApplication {
     String valueOfArgument0 = "trades.json";
     String resultOfResolveFilePathArgs0 = 
         "/home/crio-user/workspace/harshitvaghani221-ME_QMONEY/qmoney/bin/main/trades.json";
-    String toStringOfObjectMapper = "com.fasterxml.jackson.databind.ObjectMapper@373ebf74";
-    String functionNameFromTestFileInStackTrace = "PortfolioManagerApplication.mainReadFile()";
+    String toStringOfObjectMapper = 
+        "com.fasterxml.jackson.databind.ObjectMapper@373ebf74";
+    String functionNameFromTestFileInStackTrace = 
+        "PortfolioManagerApplication.mainReadFile()";
     String lineNumberFromTestFileInStackTrace = "21";
 
     return Arrays.asList(new String[] { valueOfArgument0, resultOfResolveFilePathArgs0, 
