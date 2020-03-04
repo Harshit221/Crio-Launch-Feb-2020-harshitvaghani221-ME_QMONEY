@@ -40,39 +40,38 @@ import org.apache.logging.log4j.ThreadContext;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-public class PortfolioManagerApplication {
+public class PortfolioManagerApplication_LOCAL_1327 {
 
   public static List<String> mainReadQuotes(String[] args) throws IOException, URISyntaxException {
     File file = resolveFileFromResources(args[0]);
     ObjectMapper objectMapper = getObjectMapper();
-    List<PortfolioTrade> allJsonObjects = objectMapper.readValue(file,
-                       new TypeReference<List<PortfolioTrade>>() {});
+    List<PortfolioTrade> allJsonObjects = objectMapper.readValue(file, new TypeReference<List<PortfolioTrade>>() {
+    });
     List<String> allSymbols = new ArrayList<String>();
-    List<TotalReturnsDto> mappingList = getSortedClosingPrice(objectMapper,allJsonObjects,args);
+    List<TotalReturnsDto> mappingList = getSortedClosingPrice(objectMapper, allJsonObjects, args);
     Collections.sort(mappingList);
     for (TotalReturnsDto trDto : mappingList) {
       allSymbols.add(trDto.getSymbol());
     }
-    //System.out.print(allSymbols);
+    // System.out.print(allSymbols);
     return allSymbols;
   }
 
   public static List<TotalReturnsDto> getSortedClosingPrice(ObjectMapper objectMapper,
-                                      List<PortfolioTrade> allJsonObjects,String[] args)
-                                      throws IOException, URISyntaxException {
+      List<PortfolioTrade> allJsonObjects, String[] args) throws IOException, URISyntaxException {
     RestTemplate restTemplate = new RestTemplate();
     List<TotalReturnsDto> mappingList = new ArrayList<TotalReturnsDto>();
     for (PortfolioTrade obj : allJsonObjects) {
-      String uri = "https://api.tiingo.com/tiingo/daily/" + obj.getSymbol()
-                        + "/prices?startDate=" + obj.getPurchaseDate() + "&endDate="
-                        + args[1] + "&token=366b6aa86c15fcbe47efcd6b4dc938a33de2f4e0";
-      String result = (restTemplate.getForObject(uri,String.class));
-      List<TiingoCandle> candleList = objectMapper.readValue(result,
-                        new TypeReference<List<TiingoCandle>>() {});;
+      String uri = "https://api.tiingo.com/tiingo/daily/" + obj.getSymbol() + "/prices?startDate="
+          + obj.getPurchaseDate() + "&endDate=" + args[1] + "&token=366b6aa86c15fcbe47efcd6b4dc938a33de2f4e0";
+      String result = (restTemplate.getForObject(uri, String.class));
+      List<TiingoCandle> candleList = objectMapper.readValue(result, new TypeReference<List<TiingoCandle>>() {
+      });
+      ;
       TiingoCandle candleObj = candleList.get(candleList.size() - 1);
-      TotalReturnsDto trDto = new TotalReturnsDto(obj.getSymbol(),candleObj.getClose());
+      TotalReturnsDto trDto = new TotalReturnsDto(obj.getSymbol(), candleObj.getClose());
       mappingList.add(trDto);
-      //System.out.println(obj.getSymbol()+candleObj);
+      // System.out.println(obj.getSymbol()+candleObj);
     }
     return mappingList;
   }
@@ -80,8 +79,8 @@ public class PortfolioManagerApplication {
   public static List<String> mainReadFile(String[] args) throws IOException, URISyntaxException {
     File file = resolveFileFromResources(args[0]);
     ObjectMapper objectMapper = getObjectMapper();
-    List<PortfolioTrade> allJsonObjects = objectMapper.readValue(file,
-                       new TypeReference<List<PortfolioTrade>>() {});
+    List<PortfolioTrade> allJsonObjects = objectMapper.readValue(file, new TypeReference<List<PortfolioTrade>>() {
+    });
     List<String> allSymbols = new ArrayList<String>();
     for (PortfolioTrade obj : allJsonObjects) {
       allSymbols.add(obj.getSymbol());
@@ -91,7 +90,7 @@ public class PortfolioManagerApplication {
   }
 
   private static void printJsonObject(Object object) throws IOException {
-    Logger logger = Logger.getLogger(PortfolioManagerApplication.class.getCanonicalName());
+    Logger logger = Logger.getLogger(PortfolioManagerApplication_LOCAL_1327.class.getCanonicalName());
     ObjectMapper mapper = new ObjectMapper();
     logger.info(mapper.writeValueAsString(object));
   }

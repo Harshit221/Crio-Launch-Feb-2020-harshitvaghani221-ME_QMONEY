@@ -58,11 +58,16 @@ public class PortfolioManagerImpl implements PortfolioManager {
 
   @Override
   public List<AnnualizedReturn> calculateAnnualizedReturn(List<PortfolioTrade> portfolioTrades,
-      LocalDate endDate) throws IOException, URISyntaxException {
+      LocalDate endDate) {
     List<AnnualizedReturn> annualizedReturns = new ArrayList<AnnualizedReturn>();
     for (PortfolioTrade obj : portfolioTrades) {
-      List<TiingoCandle> candleList = getStockQuote(obj.getSymbol(),
-          obj.getPurchaseDate(), endDate);
+      List<TiingoCandle> candleList = null;
+      try {
+        candleList = getStockQuote(obj.getSymbol(), obj.getPurchaseDate(), endDate);
+      } catch (JsonProcessingException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
       TiingoCandle candleObj = candleList.get(candleList.size() - 1);
       Double buyPrice = candleList.get(0).getOpen();
       Double sellPrice = candleObj.getClose();
