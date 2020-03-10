@@ -1,17 +1,16 @@
 package com.crio.warmup.stock.dto;
 
-import java.time.LocalDate;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.LocalDate;
 
 // TODO: CRIO_TASK_MODULE_ADDITIONAL_REFACTOR
 //  Implement the Candle interface in such a way that it matches the
 //  parameters returned inside Json response from AlphavantageService.
 
-  //Reference - https:www.baeldung.com/jackson-ignore-properties-on-serialization
-  //Reference - https:www.baeldung.com/jackson-name-of-property
+//Reference - https:www.baeldung.com/jackson-ignore-properties-on-serialization
+//Reference - https:www.baeldung.com/jackson-name-of-property
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AlphavantageCandle implements Candle {
   @JsonProperty("1. open")
@@ -67,13 +66,9 @@ public class AlphavantageCandle implements Candle {
 
   @Override
   public String toString() {
-    return "AlphavantageCandle{"
-            + "open=" + open
-            + ", close=" + close
-            + ", high=" + high
-            + ", low=" + low
-            + ", date=" + date
-            + '}';
+    return "AlphavantageCandle{" + "open=" + open + ", close=" + close + ", high=" 
+      + high + ", low=" + low + ", date="
+        + date + '}';
   }
 
   public AlphavantageCandle() {
@@ -86,7 +81,5 @@ public class AlphavantageCandle implements Candle {
     this.close = close;
     this.date = date;
   }
-  
-  
-  
+
 }

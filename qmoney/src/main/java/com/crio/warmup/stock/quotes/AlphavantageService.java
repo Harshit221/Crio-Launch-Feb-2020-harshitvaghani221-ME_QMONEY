@@ -1,8 +1,4 @@
-
 package com.crio.warmup.stock.quotes;
-
-import static java.time.temporal.ChronoUnit.DAYS;
-import static java.time.temporal.ChronoUnit.SECONDS;
 
 import com.crio.warmup.stock.dto.AlphavantageCandle;
 import com.crio.warmup.stock.dto.AlphavantageDailyResponse;
@@ -12,13 +8,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import org.springframework.web.client.RestTemplate;
@@ -28,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
 public class AlphavantageService implements StockQuotesService {
 
   private RestTemplate restTemplate;
-  private ObjectMapper objectMapper = new ObjectMapper();
+  private ObjectMapper objectMapper = getObjectMapper();
 
   
 
@@ -43,10 +34,10 @@ public class AlphavantageService implements StockQuotesService {
         
     for (Entry<String, AlphavantageCandle> entry : response.getCandles().entrySet()) {
       LocalDate date = LocalDate.parse(entry.getKey());
-      if(date.compareTo(from)>=0 && date.compareTo(to)<=0) {
+      if (date.compareTo(from) >= 0 && date.compareTo(to) <= 0) {
         entry.getValue().setDate(date);
         candles.add(entry.getValue());
-      } 
+      }
 
     }
     

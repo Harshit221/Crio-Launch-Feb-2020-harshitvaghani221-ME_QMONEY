@@ -31,18 +31,20 @@ public class TiingoService implements StockQuotesService {
   //  Move the code from PortfolioManagerImpl#getSTockQuotes inside newly created method.
   //  Run the tests using command below -
   // ./gradlew test --tests TiingoServiceTest and make sure it passes.
-  public List<Candle> getStockQuote(String symbol, LocalDate from, LocalDate to) throws JsonMappingException, JsonProcessingException {
+  public List<Candle> getStockQuote(String symbol, LocalDate from, LocalDate to) throws 
+      JsonMappingException, JsonProcessingException {
     String uri = buildUri(symbol, from, to);
     String result = restTemplate.getForObject(uri,String.class);
     List<TiingoCandle> candles = objectMapper.readValue(result,
         new TypeReference<List<TiingoCandle>>() {});   
     List<Candle> candleList = new ArrayList<>();
-    for(int i = 0; i < candles.size(); i++) {
+    for (int i = 0; i < candles.size(); i++) {
       candleList.add(candles.get(i));
     }
     
     return candleList;
   }
+  
   private static ObjectMapper getObjectMapper() {
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new JavaTimeModule());

@@ -1,8 +1,5 @@
 package com.crio.warmup.stock.portfolio;
 
-import static java.time.temporal.ChronoUnit.DAYS;
-import static java.time.temporal.ChronoUnit.SECONDS;
-
 import com.crio.warmup.stock.dto.AnnualizedReturn;
 import com.crio.warmup.stock.dto.Candle;
 import com.crio.warmup.stock.dto.PortfolioTrade;
@@ -12,22 +9,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.time.LocalDate; 
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 import org.springframework.web.client.RestTemplate;
 
 public class PortfolioManagerImpl implements PortfolioManager {
@@ -58,25 +45,27 @@ public class PortfolioManagerImpl implements PortfolioManager {
   // run ./gradlew build in order to test yout code, and make sure that
   // the tests and static code quality pass.
 
-  protected PortfolioManagerImpl(RestTemplate restTemplate, StockQuotesService stockQuotesService) {
+  protected PortfolioManagerImpl(RestTemplate restTemplate, 
+      StockQuotesService stockQuotesService) {
     this.stockQuotesService = stockQuotesService;
     this.restTemplate = restTemplate;
   }
 
 
-@Override
+  @Override
   public List<AnnualizedReturn> calculateAnnualizedReturn(List<PortfolioTrade> portfolioTrades,
       LocalDate endDate) {
     List<AnnualizedReturn> annualizedReturns = new ArrayList<AnnualizedReturn>();
     for (PortfolioTrade obj : portfolioTrades) {
-      List<TiingoCandle> candleList = new ArrayList<>();
+      List<Candle> candleList = new ArrayList<>();
       try {
-        candleList = getStockQuote(obj.getSymbol(), obj.getPurchaseDate(), endDate);
+        candleList = stockQuotesService.getStockQuote(obj.getSymbol(), 
+            obj.getPurchaseDate(), endDate);
       } catch (JsonProcessingException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
-      TiingoCandle candleObj = candleList.get(candleList.size() - 1);
+      TiingoCandle candleObj = (TiingoCandle) candleList.get(candleList.size() - 1);
       Double buyPrice = candleList.get(0).getOpen();
       Double sellPrice = candleObj.getClose();
       Double totalReturn = (sellPrice - buyPrice) / buyPrice; 

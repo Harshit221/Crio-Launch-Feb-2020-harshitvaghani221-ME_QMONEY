@@ -4,7 +4,6 @@ package com.crio.warmup.stock.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.LocalDate;
 import java.util.TreeMap;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -17,8 +16,7 @@ public class AlphavantageDailyResponse {
     return candles;
   }
 
-  public void setCandles(
-    TreeMap<String, AlphavantageCandle> candles) {
+  public void setCandles(TreeMap<String, AlphavantageCandle> candles) {
     this.candles = candles;
   }
 
@@ -28,5 +26,5 @@ public class AlphavantageDailyResponse {
   public AlphavantageDailyResponse(TreeMap<String, AlphavantageCandle> candles) {
     this.candles = candles;
   }
-  
+
 }

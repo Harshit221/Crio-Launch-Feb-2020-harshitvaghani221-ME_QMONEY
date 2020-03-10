@@ -1,15 +1,6 @@
-
 package com.crio.warmup.stock.portfolio;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import com.crio.warmup.stock.dto.AnnualizedReturn;
-import com.crio.warmup.stock.dto.PortfolioTrade;
 import com.crio.warmup.stock.quotes.StockQuoteServiceFactory;
-import com.crio.warmup.stock.quotes.StockQuotesService;
-import com.crio.warmup.stock.quotes.TiingoService;
-
 import org.springframework.web.client.RestTemplate;
 
 public class PortfolioManagerFactory {
@@ -17,8 +8,8 @@ public class PortfolioManagerFactory {
   
 
   public static PortfolioManager getPortfolioManager(RestTemplate restTemplate) {
-     return new PortfolioManagerImpl(restTemplate);
-   }
+    return new PortfolioManagerImpl(restTemplate);
+  }
 
   // TODO: CRIO_TASK_MODULE_ADDITIONAL_REFACTOR
   //  Implement the method in such a way that it will return new Instance of PortfolioManager
@@ -32,7 +23,8 @@ public class PortfolioManagerFactory {
 
 
   public static PortfolioManager getPortfolioManager(String provider, RestTemplate restTemplate) {
-    return new PortfolioManagerImpl(restTemplate, StockQuoteServiceFactory.getService(provider, restTemplate));
+    return new PortfolioManagerImpl(restTemplate, 
+        StockQuoteServiceFactory.getService(provider, restTemplate));
   }
 
 }
