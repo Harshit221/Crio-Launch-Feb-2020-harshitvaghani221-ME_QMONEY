@@ -41,7 +41,7 @@ public class AlphavantageService implements StockQuotesService {
     AlphavantageDailyResponse response = objectMapper.readValue(result, 
         new TypeReference<AlphavantageDailyResponse>() {});
         
-    for(Entry<String, AlphavantageCandle> entry:response.getCandles().entrySet()) {
+    for (Entry<String, AlphavantageCandle> entry : response.getCandles().entrySet()) {
       LocalDate date = LocalDate.parse(entry.getKey());
       if(date.compareTo(from)>=0 && date.compareTo(to)<=0) {
         entry.getValue().setDate(date);
