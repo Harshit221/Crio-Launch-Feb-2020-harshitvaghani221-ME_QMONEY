@@ -7,6 +7,7 @@ import com.crio.warmup.stock.dto.AnnualizedReturn;
 import com.crio.warmup.stock.dto.Candle;
 import com.crio.warmup.stock.dto.PortfolioTrade;
 import com.crio.warmup.stock.dto.TiingoCandle;
+import com.crio.warmup.stock.quotes.StockQuotesService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,6 +33,7 @@ import org.springframework.web.client.RestTemplate;
 public class PortfolioManagerImpl implements PortfolioManager {
 
   private RestTemplate restTemplate;
+  private StockQuotesService stockQuotesService;
   private ObjectMapper objectMapper = getObjectMapper();
 
 
@@ -56,7 +58,13 @@ public class PortfolioManagerImpl implements PortfolioManager {
   // run ./gradlew build in order to test yout code, and make sure that
   // the tests and static code quality pass.
 
-  @Override
+  protected PortfolioManagerImpl(RestTemplate restTemplate, StockQuotesService stockQuotesService) {
+    this.stockQuotesService = stockQuotesService;
+    this.restTemplate = restTemplate;
+  }
+
+
+@Override
   public List<AnnualizedReturn> calculateAnnualizedReturn(List<PortfolioTrade> portfolioTrades,
       LocalDate endDate) {
     List<AnnualizedReturn> annualizedReturns = new ArrayList<AnnualizedReturn>();
@@ -122,6 +130,15 @@ public class PortfolioManagerImpl implements PortfolioManager {
     return uriTemplate;  
   }
 
+  public PortfolioManagerImpl(StockQuotesService stockQuotesService) {
+    this.stockQuotesService = stockQuotesService;
+  }
 
 
+  // TODO: CRIO_TASK_MODULE_ADDITIONAL_REFACTOR
+  //  Modify the function #getStockQuote and start delegating to calls to
+  //  stockQuoteService provided via newly added constructor of the class.
+  //  You also have a liberty to completely get rid of that function itself, however, make sure
+  //  that you do not delete the #getStockQuote function.
+  
 }
